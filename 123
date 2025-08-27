@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Test Page</title>
+</head>
+<body style="background:#111;color:#0f0;text-align:center;padding-top:50px;">
+  <h1>GitHub Pages đã chạy thành công 🚀</h1>
+  <p>Nếu bạn thấy được dòng này, game thật sẽ chạy được.</p>
+</body>
+</html>
