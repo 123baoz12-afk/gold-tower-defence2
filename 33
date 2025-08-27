@@ -1,0 +1,62 @@
+// --- Canvas setup ---
+const canvas = document.getElementById("gameCanvas");
+const ctx = canvas.getContext("2d");
+
+// --- Enemy + Tower test ---
+let enemies = [
+  {x: 0, y: 250, hp: 100, speed: 1}
+];
+
+let tower = {x: 400, y: 300, range: 150, cooldown: 0};
+
+function drawEnemy(e) {
+  ctx.fillStyle = "red";
+  ctx.fillRect(e.x, e.y, 20, 20);
+}
+
+function drawTower() {
+  ctx.fillStyle = "cyan";
+  ctx.beginPath();
+  ctx.arc(tower.x, tower.y, 20, 0, Math.PI * 2);
+  ctx.fill();
+}
+
+function distance(a, b) {
+  return Math.hypot(a.x - b.x, a.y - b.y);
+}
+
+function update() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  // Move enemies
+  enemies.forEach(e => {
+    e.x += e.speed;
+    drawEnemy(e);
+  });
+
+  // Draw tower
+  drawTower();
+
+  // Tower attack
+  if (tower.cooldown > 0) tower.cooldown--;
+
+  enemies.forEach((e, i) => {
+    if (distance(tower, e) < tower.range && tower.cooldown === 0) {
+      // shoot
+      ctx.strokeStyle = "yellow";
+      ctx.beginPath();
+      ctx.moveTo(tower.x, tower.y);
+      ctx.lineTo(e.x + 10, e.y + 10);
+      ctx.stroke();
+
+      e.hp -= 20;
+      tower.cooldown = 60; // 1s cooldown (60fps)
+
+      if (e.hp <= 0) enemies.splice(i, 1);
+    }
+  });
+
+  requestAnimationFrame(update);
+}
+
+update();
